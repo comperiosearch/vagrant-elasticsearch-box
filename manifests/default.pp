@@ -9,72 +9,18 @@ define append_if_no_such_line($file, $line, $refreshonly = 'false') {
 class must-have {
   include yum
    
-  package { ['vim', 'curl', 'git-core', 'bash']:
-    ensure => present,
-    require => Exec['yum update'],
-  
-  }
-
-  package { 'nginx':
-    ensure => installed,
-    require =>  Yumrepo["ngingxrepo"] 
-    }
  
-  service { 'nginx':
-    ensure => running,
-    enable => true,
-    hasrestart => true,
-    require => Package['nginx']
-  }
+  #package { ['vim', 'curl', 'git', 'bash']:
+  #  ensure => present,
+  #  require => Exec['yum-update'],
+#  }
 
-  file { '/etc/nginx/nginx.conf':
-    ensure => link,
-    source => '/vagrant/kibana_config/nginx.conf',
-    notify => Service['nginx'],
-    require => [ Package['nginx'], Exec['download_kibana'] ]
-  }
+ 
 
-  exec { 'download_kibana':
-    command => 'git clone https://github.com/elasticsearch/kibana.git',
-    cwd => '/home/vagrant',
-    user => 'vagrant',
-    path => '/usr/bin/:/bin/',
-    require => [ Package['git-core'] ],
-    logoutput => true,
-  }
-
-  file { '/home/vagrant/kibana/src/config.js':
-    ensure => link,
-    source => '/vagrant/kibana_config/config.js',
-    notify => Service['nginx'],
-    require => [ Package['nginx'], Exec['download_kibana'] ]
-  }
-
-  
-  exec { "accept_license":
-    command => "echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections",
-    cwd => "/home/vagrant",
-    user => "vagrant",
-    path => "/usr/bin/:/bin/",
-    require => Package["curl"],
-    before => Package["oracle-java7-installer"],
-    logoutput => true,
-  }
-
-node default {
-   include base
-}
-
-class base {
-  yumrepo { 'nginxrepo':
-    baseurl => 'http://nginx.org/packages/centos/$releasever/$basearch/',
-    gpgcheck => 0,
-    enabled => 1
-  }
-}
+  class { 'puppi': }
 
   class { 'elasticsearch':
-    package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.Beta2.deb',
+    package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.Beta2.noarch.rpm',
     config => {
       'cluster.name' => 'vagrant_elasticsearch',
       'node.name' => $::ipaddress,
@@ -96,5 +42,6 @@ class base {
   }
 }
 
-include must-have
 include oracle_java
+include must-have
+

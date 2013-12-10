@@ -13,3 +13,6 @@
 [submodule "modules\\yum"]
 	path = modules\\yum
 	url = https://github.com/example42/puppet-yum.git
+[submodule "modules/puppi"]
+	path = modules/puppi
+	url = https://github.com/example42/puppi.git

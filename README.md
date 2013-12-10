@@ -1,6 +1,9 @@
 # Vagrant ElasticSearch box
 
-Box to get an ElasticSearch environment quickly up and running in a VM.
+Intended to get a CentOs box with ElasticSearch environment quickly up and running in a VM.
+
+#BROKEN AT THE MOMENT, TRY OUT THE BRILLIANT [nhhagen](https://github.com/nhhagen/vagrant-elasticsearch-box) WHICH THIS IS FORKED FROM
+Or, if you really want CentOs - You should try out Babadofars pathetic attempt [https://github.com/babadofar/c6vagrant](https://github.com/babadofar/c6vagrant)
 
 ## Running the box
 
